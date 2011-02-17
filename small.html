@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Panorama 360&deg;</title>
+	<meta name="description" content="Creative design agency that tries to make the complex feel simple." />
+	<link rel="stylesheet" href="css/site.css" media="all" />
+	<link rel="stylesheet" href="css/panorama360.css" media="all" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script src="js/jquery.mousewheel.min.js"></script>
+	<script src="js/jquery.panorama360.js"></script>
+	<script>
+	<!--
+		$(function(){
+			$('.panorama-view').panorama360({
+				bind_resize: false	// no need to subscribe to window resize event
+			});
+		});
+	-->
+	</script>
+</head>
+<body>
+	<div class="panorama round" style="position:absolute;width:700px;height:500px;padding:10px;top:50%;left:50%;margin-top:-260px;margin-left:-360px;background-color:#444;">
+		<div class="panorama-view">
+			<div class="panorama-container">
+				<img src="images/View_from_Sky_Tower_Akl_small.jpg" data-width="1922" data-height="500" alt="Panorama" />
+			</div>
+		</div>
+		<a class="info round" href="http://commons.wikimedia.org/wiki/File:View_from_Sky_Tower_Akl.jpg">Sky Tower Akl</a>
+	</div>
+</body>
+</html>

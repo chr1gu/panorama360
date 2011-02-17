@@ -1,0 +1,15 @@
+/* layout */
+.panorama,.panorama-view{width:100%;height:100%;overflow:hidden}
+.panorama,.panorama-container{position:relative}
+.panorama-container img{height:100%;position:absolute;top:0}
+.panorama .info,.panorama-view .area{position:absolute;display:block}
+.panorama .info{right:10px;bottom:10px}
+
+/* style */
+.panorama-view{cursor:url(../images/openhand.cur),default}
+.panorama-view.grab{cursor:url(../images/closedhand.cur),default}
+.panorama .info{padding:6px;opacity:0.4;background-color:#000;color:#fff;font:11px bold Arial,sans-serif;text-decoration:none}
+.panorama .info:hover{opacity:0.6}
+.panorama-view .area{opacity:0.2;background-color:#000;cursor:pointer}
+.panorama-view .area:hover{opacity:0.4}
+.panorama-view img{user-select:none;-o-user-select:none;-moz-user-select:none;-webkit-user-select:none)}
