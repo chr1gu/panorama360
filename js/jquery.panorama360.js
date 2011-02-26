@@ -3,7 +3,8 @@
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  * Thanks to: http://www.openstudio.fr for the initial idea.
- * Version: 1.0
+ *
+ * Some changes were made by evgeny g likov (http://likov.spb.ru): fixed drag and kinetic scroll (thanks man!)
  */
 (function($) {
 	$.fn.panorama360 = function(options){
@@ -30,36 +31,41 @@
 			var elem_width = parseInt(elem_height/image_ratio);
 			var image_map = viewportImage.attr('usemap');
 			var image_areas;
-			var isMouseMoving = false;
-			var posMouseStart = 0;
+			var isDragged = false;
+			var mouseXprev = 0;
+			var scrollDelta = 0;
 
 			viewportImage.removeAttr("usemap").css("left",0).clone().css("left",elem_width+"px").insertAfter(viewportImage);
-			
+
 			panoramaContainer.css({
 				'margin-left': '-'+settings.start_position+'px',
 				'width': (elem_width*2)+'px',
 				'height': (elem_height)+'px'
 			});
 
+			setInterval( function() {
+				if (isDragged) return false;
+				scrollDelta = scrollDelta * 0.98;
+				if (Math.abs(scrollDelta)<=2) scrollDelta = 0;
+				scrollView(panoramaContainer, elem_width, scrollDelta);
+			}, 1)
 			viewport.mousedown(function(e){
-				if (!isMouseMoving){
-					isMouseMoving = true;
-					posMouseStart = e.clientX;
-				}
+				if (isDragged) return false;
 				$(this).addClass("grab");
-				e.preventDefault();
+				isDragged = true;
+				mouseXprev = e.clientX;
+				scrollOffset = 0;
 				return false;
 			}).mouseup(function(){
-				isMouseMoving = false;
-				posMouseStart = 0;
 				$(this).removeClass("grab");
+				isDragged = false;
+				scrollDelta = scrollDelta * 0.5;
 				return false;
 			}).mousemove(function(e){
-				if (!isMouseMoving) return false;
-				var delta = -parseInt((posMouseStart-e.clientX)/settings.drag_factor);
-				if ((delta>10) || (delta<10)) {
-					scrollView(panoramaContainer,elem_width,delta);
-				}
+				if (!isDragged) return false;
+				scrollDelta = parseInt((e.clientX - mouseXprev));
+				mouseXprev = e.clientX;
+				scrollView(panoramaContainer, elem_width, scrollDelta);
 				return false;
 			}).bind("mousewheel",function(e,distance){
 				delta=Math.ceil(Math.sqrt(Math.abs(distance))),
@@ -67,7 +73,7 @@
 				scrollView(panoramaContainer,elem_width,delta*settings.mouse_wheel_multiplier);
 				return false;
 			}).bind('contextmenu',stopEvent);
-			
+
 			if (image_map) {
 				$('map[name='+image_map+']').children('area').each(function(){
 					switch ($(this).attr("shape").toLowerCase()){
