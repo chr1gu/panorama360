@@ -13,7 +13,7 @@
 				start_position: 0,
 				image_width: 0,
 				image_height: 0,
-				mouse_wheel_multiplier: 50,
+				mouse_wheel_multiplier: 20,
 				drag_factor: 20,
 				bind_resize: true
 			};
@@ -59,7 +59,7 @@
 			}).mouseup(function(){
 				$(this).removeClass("grab");
 				isDragged = false;
-				scrollDelta = scrollDelta * 0.5;
+				scrollDelta = scrollDelta * 0.45;
 				return false;
 			}).mousemove(function(e){
 				if (!isDragged) return false;
@@ -70,6 +70,7 @@
 			}).bind("mousewheel",function(e,distance){
 				delta=Math.ceil(Math.sqrt(Math.abs(distance))),
 				delta=distance<0 ? -delta : delta;
+				scrollDelta = scrollDelta + delta * 5;
 				scrollView(panoramaContainer,elem_width,delta*settings.mouse_wheel_multiplier);
 				return false;
 			}).bind('contextmenu',stopEvent);
