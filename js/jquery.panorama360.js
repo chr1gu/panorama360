@@ -4,7 +4,7 @@
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  * Thanks to: http://www.openstudio.fr for the initial idea.
  *
- * Some changes were made by evgeny g likov (http://likov.spb.ru): fixed drag and kinetic scroll (thanks man!)
+ * Some changes were made by Evgeny Likov (http://likov.spb.ru): fixed drag and kinetic scroll (thanks man!)
  */
 (function($) {
 	$.fn.panorama360 = function(options){
@@ -14,7 +14,6 @@
 				image_width: 0,
 				image_height: 0,
 				mouse_wheel_multiplier: 20,
-				drag_factor: 20,
 				bind_resize: true
 			};
 			if(options) $.extend(settings, options);
@@ -48,7 +47,7 @@
 				scrollDelta = scrollDelta * 0.98;
 				if (Math.abs(scrollDelta)<=2) scrollDelta = 0;
 				scrollView(panoramaContainer, elem_width, scrollDelta);
-			}, 1)
+			}, 1);
 			viewport.mousedown(function(e){
 				if (isDragged) return false;
 				$(this).addClass("grab");
@@ -68,12 +67,27 @@
 				scrollView(panoramaContainer, elem_width, scrollDelta);
 				return false;
 			}).bind("mousewheel",function(e,distance){
-				delta=Math.ceil(Math.sqrt(Math.abs(distance))),
+				var delta=Math.ceil(Math.sqrt(Math.abs(distance)));
 				delta=distance<0 ? -delta : delta;
 				scrollDelta = scrollDelta + delta * 5;
 				scrollView(panoramaContainer,elem_width,delta*settings.mouse_wheel_multiplier);
 				return false;
-			}).bind('contextmenu',stopEvent);
+			}).bind('contextmenu',stopEvent).bind('touchstart', function(e){
+				if (isDragged) return false;
+				isDragged = true;
+				mouseXprev = e.originalEvent.touches[0].pageX;
+				scrollOffset = 0;
+			}).bind('touchmove', function(e){
+				e.preventDefault();
+				if (!isDragged) return false;
+				var touch_x = e.originalEvent.touches[0].pageX;
+				scrollDelta = parseInt((touch_x - mouseXprev));
+				mouseXprev = touch_x;
+				scrollView(panoramaContainer, elem_width, scrollDelta);
+			}).bind('touchend', function(e){
+				isDragged = false;
+				scrollDelta = scrollDelta * 0.45;
+			});
 
 			if (image_map) {
 				$('map[name='+image_map+']').children('area').each(function(){
