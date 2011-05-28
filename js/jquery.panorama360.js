@@ -120,6 +120,9 @@
 					if (image_map) repositionHotspots(image_areas,settings.image_height,elem_height,elem_width);
 				});
 			}
+            if (settings.callback && typeof settings.callback === 'function'){
+                settings.callback();
+			}
 		});
 		
 		function stopEvent(e){
