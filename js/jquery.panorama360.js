@@ -34,7 +34,7 @@
 			var mouseXprev = 0;
 			var scrollDelta = 0;
 
-			viewportImage.removeAttr("usemap").css("left",0).clone().css("left",elem_width+"px").insertAfter(viewportImage);
+			viewportImage.height(elem_height).removeAttr("usemap").css("left",0).clone().css("left",elem_width+"px").insertAfter(viewportImage);
 
 			panoramaContainer.css({
 				'margin-left': '-'+settings.start_position+'px',
@@ -121,7 +121,13 @@
 				});
 			}
             if (settings.callback && typeof settings.callback === 'function'){
-                settings.callback();
+                var img = 0;
+                $('.panorama-container img').load(function(e){
+                    img += 1;
+                    if (img == 2) {
+                        settings.callback();
+                    }
+                });
 			}
 		});
 		
