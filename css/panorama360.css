@@ -9,7 +9,7 @@
 .panorama-view{cursor:url(../images/openhand.cur),default}
 .panorama-view.grab{cursor:url(../images/closedhand.cur),default}
 .panorama .info{padding:6px;opacity:0.4;background-color:#000;color:#fff;font:11px bold Arial,sans-serif;text-decoration:none}
-.panorama .info:hover{opacity:0.6}
-.panorama-view .area{opacity:0.2;background-color:#000;cursor:pointer}
-.panorama-view .area:hover{opacity:0.4}
+.panorama .info:hover{opacity:0.6!important;}
+.panorama-view .area{opacity:0.2;background-color:#000;cursor:pointer;overflow:hidden;text-indent:-9999px;}
+.panorama-view .area:hover{opacity:0.4!important;}
 .panorama-view img{user-select:none;-o-user-select:none;-moz-user-select:none;-webkit-user-select:none)}

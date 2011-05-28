@@ -91,16 +91,18 @@
 
 			if (image_map) {
 				$('map[name='+image_map+']').children('area').each(function(){
+                    var area_coord, area_fragment;
 					switch ($(this).attr("shape").toLowerCase()){
 						case 'rect':
-							var area_coord = $(this).attr("coords").split(",");
-							$area1 = $("<a class='area' href='"+$(this).attr("href")+"' title='"+$(this).attr("alt")+"'</a>");
-							panoramaContainer.append($area1.data("stitch",1).data("coords",area_coord));
-							panoramaContainer.append($area1.clone().data("stitch",2).data("coords",area_coord));
+							area_coord = $(this).attr("coords").split(",");
+                            area_fragment = $("<a class='area' href='"+$(this).attr("href")+"' title='"+$(this).attr("alt")+"'>"+$(this).attr("alt")+"</a>");
+							// opacity support in older browser
+                            area_fragment.css({opacity:0.2});
+                            panoramaContainer.append(area_fragment.data("stitch",1).data("coords",area_coord));
+							panoramaContainer.append(area_fragment.clone().data("stitch",2).data("coords",area_coord));
 							break;
 					}
-				});
-				$('map[name='+image_map+']').remove();
+				}).remove();
 				image_areas = panoramaContainer.children(".area");
 				image_areas.mouseup(stopEvent).mousemove(stopEvent).mousedown(stopEvent);
 				repositionHotspots(image_areas,settings.image_height,elem_height,elem_width);
